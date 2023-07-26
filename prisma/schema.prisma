@@ -1,0 +1,101 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Meal {
+  id          Int      @id @default(autoincrement())
+  name        String
+  description String?
+  price       Float
+  categoryId  Int
+  category    Category @relation(fields: [categoryId], references: [id])
+  image       String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  Order     Order?   @relation(fields: [orderId], references: [id])
+  orderId   Int?
+
+  @@index([name])
+}
+
+model Category {
+  id   Int    @id @default(autoincrement())
+  name String
+
+  meals Meal[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([name])
+}
+
+model CartItem {
+  id      Int    @id @default(autoincrement())
+  name    String
+  amount  Int
+  price   Float
+  orderId Int
+  order   Order  @relation(fields: [orderId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  deleted Boolean @default(false)
+}
+
+model Order {
+  id        Int    @id @default(autoincrement())
+  firstName String
+  lastName  String
+  address   String
+  city      String
+  district  String
+  street    String
+  phone     String
+
+  cartItems   CartItem[]
+  cartTotal   Float
+  orderDate   DateTime
+  paymentType String
+  userId      Int
+  user        User       @relation(fields: [userId], references: [id])
+  meals       Meal[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  deleted Boolean @default(false)
+}
+
+model User {
+  id        Int    @id @default(autoincrement())
+  email     String @unique
+  firstName String
+  lastName  String
+  address   String
+  city      String
+  district  String
+  street    String
+  phone     String
+
+  dataConsent      Boolean @default(false)
+  marketingConsent Boolean @default(false)
+  orders           Order[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  deleted Boolean @default(false)
+
+  @@index([email])
+}
