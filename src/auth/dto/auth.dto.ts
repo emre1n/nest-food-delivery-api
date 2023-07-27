@@ -6,6 +6,6 @@ export class AuthDto {
   email: string;
 
   @IsString()
-  @Length(8)
+  @Length(8, 255)
   password: string;
 }
