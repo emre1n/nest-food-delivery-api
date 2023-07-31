@@ -1,7 +1,9 @@
 import { Test } from '@nestjs/testing';
+import * as pactum from 'pactum';
 import { AppModule } from '../src/app.module';
 import { INestApplication, ValidationPipe } from '@nestjs/common';
 import { PrismaService } from '../src/prisma/prisma.service';
+import { AuthDto, CreateUserDto } from '../src/auth/dto';
 
 describe('App e2e', () => {
   let app: INestApplication;
@@ -18,10 +20,12 @@ describe('App e2e', () => {
       }),
     );
     await app.init();
+    await app.listen(3333);
 
     prisma = app.get(PrismaService);
 
     await prisma.cleanDb();
+    pactum.request.setBaseUrl('http://localhost:3333');
   });
 
   afterAll(() => {
@@ -30,30 +34,135 @@ describe('App e2e', () => {
 
   describe('Auth', () => {
     describe('Signup', () => {
-      it.todo('should signup');
+      const dto: CreateUserDto = {
+        email: 'john@email.com',
+        password: 'password123',
+        retypedPassword: 'password123',
+        firstName: 'John',
+        lastName: 'Doe',
+        address: '123 Main St',
+        city: 'Anytown',
+        district: 'Anydistrict',
+        street: 'Main Street',
+        phone: '123-456-7890',
+        dataConsent: true,
+        marketingConsent: false,
+      };
+
+      it('should throw error if email empty', () => {
+        return pactum
+          .spec()
+          .post('/auth/signup')
+          .withBody({
+            ...dto,
+            email: '',
+          })
+          .expectStatus(400);
+      });
+
+      it('should throw error if password fields empty', () => {
+        return pactum
+          .spec()
+          .post('/auth/signup')
+          .withBody({
+            ...dto,
+            password: '',
+            retypedPassword: '',
+          })
+          .expectStatus(400);
+      });
+
+      it('should throw error if all fields empty', () => {
+        return pactum
+          .spec()
+          .post('/auth/signup')
+          .withBody({})
+          .expectStatus(400);
+      });
+
+      it('should signup', () => {
+        return pactum
+          .spec()
+          .post('/auth/signup')
+          .withBody(dto)
+          .expectStatus(201);
+      });
     });
 
     describe('Signin', () => {
-      it.todo('should signin');
+      const dto: AuthDto = {
+        email: 'john@email.com',
+        password: 'password123',
+      };
+
+      it('should throw error if email empty', () => {
+        return pactum
+          .spec()
+          .post('/auth/signin')
+          .withBody({
+            ...dto,
+            email: '',
+          })
+          .expectStatus(400);
+      });
+
+      it('should throw error if password fields empty', () => {
+        return pactum
+          .spec()
+          .post('/auth/signin')
+          .withBody({
+            ...dto,
+            password: '',
+            retypedPassword: '',
+          })
+          .expectStatus(400);
+      });
+
+      it('should throw error if all fields empty', () => {
+        return pactum
+          .spec()
+          .post('/auth/signin')
+          .withBody({})
+          .expectStatus(400);
+      });
+
+      it('should signin', () => {
+        return pactum
+          .spec()
+          .post('/auth/signin')
+          .withBody(dto)
+          .expectStatus(200)
+          .stores('userAt', 'access_token');
+      });
     });
   });
 
   describe('User', () => {
     describe('Get me', () => {
-      // Get me tests here
+      // tests here
     });
 
     describe('Edit user', () => {
-      // Edit user tests here
+      // tests here
     });
   });
 
   describe('Order', () => {
-    describe('creates new order', () => {});
-    describe('gets all orders', () => {});
-    describe('gets order by id', () => {});
-    describe('edits order by id', () => {});
-    describe('deletes order by id', () => {});
+    describe('creates new order', () => {
+      // tests here
+    });
+    describe('gets all orders', () => {
+      // tests here
+    });
+    describe('gets order by id', () => {
+      // tests here
+    });
+    describe('edits order by id', () => {
+      // tests here
+    });
+    describe('deletes order by id', () => {
+      // tests here
+    });
   });
 
   describe('Meal', () => {
