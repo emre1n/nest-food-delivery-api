@@ -1,19 +1,19 @@
 import { Injectable } from '@nestjs/common';
 import { Order } from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { CreateOrderDto } from './dto';
+import { CreateOrderDto, EditOrderDto } from './dto';
 
 @Injectable()
 export class OrderService {
   constructor(private prisma: PrismaService) {}
-  getOrders() {
+  getOrders(userId: number) {
     // logic here
   }
-  getOrderById() {
+  getOrderById(userId: number, orderId: number) {
     // logic here
   }
 
-  createOrder(dto: CreateOrderDto, userId: number): Promise<Order> {
+  createOrder(userId: number, dto: CreateOrderDto): Promise<Order> {
     const { cartItems, cartTotal, paymentType } = dto;
     return this.prisma.order.create({
       data: {
@@ -25,11 +25,11 @@ export class OrderService {
     });
   }
 
-  editOrderById() {
+  editOrderById(userId: number, orderId: number, dto: EditOrderDto) {
     // logic here
   }
 
-  deleteOrderById() {
+  deleteOrderById(userId: number, orderId: number) {
     // logic here
   }
 }

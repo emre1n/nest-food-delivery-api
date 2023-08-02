@@ -12,7 +12,7 @@ import {
 import { JwtGuard } from '../auth/guard';
 import { OrderService } from './order.service';
 import { GetUser } from '../auth/decorator';
-import { CreateOrderDto } from './dto';
+import { CreateOrderDto, EditOrderDto } from './dto';
 import { Order, User } from '@prisma/client';
 
 @UseGuards(JwtGuard)
@@ -21,7 +21,7 @@ export class OrderController {
   constructor(private orderService: OrderService) {}
   @Get()
   getOrders(@GetUser('id') userId: number) {
-    // endpoint
+    return this.orderService.getOrders(userId);
   }
 
   @Get(':id')
@@ -29,7 +29,7 @@ export class OrderController {
     @GetUser('id') userId: number,
     @Param('id', ParseIntPipe) orderId: number,
   ) {
-    // endpoint
+    return this.orderService.getOrderById(userId, orderId);
   }
 
   @Post()
@@ -37,16 +37,23 @@ export class OrderController {
     @GetUser('id') userId: number,
     @Body() dto: CreateOrderDto,
   ): Promise<Order> {
-    return this.orderService.createOrder(dto, userId);
+    return this.orderService.createOrder(userId, dto);
   }
 
-  @Patch()
-  editOrderById(@GetUser('id') userId: number) {
-    // endpoint
+  @Patch(':id')
+  editOrderById(
+    @GetUser('id') userId: number,
+    @Param('id', ParseIntPipe) orderId: number,
+    @Body() dto: EditOrderDto,
+  ) {
+    return this.orderService.editOrderById(userId, orderId, dto);
   }
 
-  @Delete()
-  deleteOrderById(@GetUser('id') userId: number) {
-    // endpoint
+  @Delete(':id')
+  deleteOrderById(
+    @GetUser('id') userId: number,
+    @Param('id', ParseIntPipe) orderId: number,
+  ) {
+    return this.orderService.deleteOrderById(userId, orderId);
   }
 }
