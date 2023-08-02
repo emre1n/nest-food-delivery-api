@@ -10,6 +10,11 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum PaymentType {
+  CASH
+  CREDIT_CARD
+}
+
 model Meal {
   id        Int      @id @default(autoincrement())
   createdAt DateTime @default(now())
@@ -57,10 +62,23 @@ model Order {
 
   cartItems   CartItem[]
   cartTotal   Float
-  paymentType String
+  paymentType PaymentType @default(CASH)
 
-  userId Int
-  user   User @relation(fields: [userId], references: [id])
+  userId      Int
+  user        User          @relation(fields: [userId], references: [id])
+  Transaction Transaction[]
+}
+
+model Transaction {
+  id        Int      @id
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  amount        Int
+  paymentMethod PaymentType
+
+  orderId Int
+  order   Order @relation(fields: [orderId], references: [id])
 }
 
 model User {

@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsString } from 'class-validator';
+import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
 export class EditOrderDto {
   @IsNotEmpty()
@@ -16,30 +16,6 @@ export class EditOrderDto {
   cartTotal: number;
 
   @IsString()
-  paymentType: 'cash' | 'credit';
-
-  @IsString()
-  @IsNotEmpty()
-  firstName: string;
-
-  @IsString()
-  @IsNotEmpty()
-  lastName: string;
-
-  @IsString()
-  @IsNotEmpty()
-  address: string;
-
-  @IsString()
-  @IsNotEmpty()
-  city: string;
-
-  @IsString()
-  district: string;
-
-  @IsString()
-  street: string;
-
-  @IsString()
-  phone: string;
+  @IsOptional()
+  paymentType?: 'cash' | 'credit';
 }

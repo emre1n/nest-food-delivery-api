@@ -37,7 +37,7 @@ export class OrderController {
     @GetUser('id') userId: number,
     @Body() dto: CreateOrderDto,
   ): Promise<Order> {
-    return this.orderService.createOrder(dto, (userId = 1));
+    return this.orderService.createOrder(dto, userId);
   }
 
   @Patch()
