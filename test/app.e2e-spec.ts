@@ -211,14 +211,34 @@ describe('App e2e', () => {
             Authorization: 'Bearer $S{userAt}',
           })
           .withBody(dto)
-          .expectStatus(201);
+          .expectStatus(201)
+          .stores('orderId', 'id');
       });
     });
     describe('gets all orders', () => {
-      // tests here
+      it('should get orders', () => {
+        return pactum
+          .spec()
+          .get('/order')
+          .withHeaders({
+            Authorization: 'Bearer $S{userAt}',
+          })
+          .expectStatus(200)
+          .expectJsonLength(1);
+      });
     });
     describe('gets order by id', () => {
-      // tests here
+      it('should get order by id', () => {
+        return pactum
+          .spec()
+          .get('/order/{id}')
+          .withPathParams('id', '$S{orderId}')
+          .withHeaders({
+            Authorization: 'Bearer $S{userAt}',
+          })
+          .expectStatus(200)
+          .expectBodyContains('$S{orderId}');
+      });
     });
     describe('edits order by id', () => {
       // tests here

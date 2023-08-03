@@ -14,7 +14,12 @@ export class OrderService {
     });
   }
   getOrderById(userId: number, orderId: number) {
-    // logic here
+    return this.prisma.order.findFirst({
+      where: {
+        id: orderId,
+        userId,
+      },
+    });
   }
 
   async createOrder(userId: number, dto: CreateOrderDto): Promise<Order> {
