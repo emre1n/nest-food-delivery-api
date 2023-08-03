@@ -51,7 +51,7 @@ model CartItem {
   price  Float
 
   orderId Int
-  order   Order @relation(fields: [orderId], references: [id])
+  order   Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
 }
 
 model Order {
@@ -65,7 +65,7 @@ model Order {
   paymentType PaymentType @default(CASH)
 
   userId      Int
-  user        User          @relation(fields: [userId], references: [id])
+  user        User          @relation(fields: [userId], references: [id], onDelete: Cascade)
   Transaction Transaction[]
 }
 

@@ -4,7 +4,9 @@ import { AppModule } from '../src/app.module';
 import { INestApplication, ValidationPipe } from '@nestjs/common';
 import { PrismaService } from '../src/prisma/prisma.service';
 import { AuthDto, CreateUserDto } from '../src/auth/dto';
-import { EditUserDto } from 'src/user/dto';
+import { EditUserDto } from '../src/user/dto';
+import { CreateOrderDto } from '../src/order/dto';
+import { PaymentType } from '@prisma/client';
 
 describe('App e2e', () => {
   let app: INestApplication;
@@ -29,7 +31,7 @@ describe('App e2e', () => {
     pactum.request.setBaseUrl('http://localhost:3333');
   });
 
-  afterAll(() => {
+  afterAll(async () => {
     app.close();
   });
 
@@ -172,8 +174,45 @@ describe('App e2e', () => {
   });
 
   describe('Order', () => {
+    describe('gets empty orders', () => {
+      it('should get orders', () => {
+        return pactum
+          .spec()
+          .get('/order')
+          .withHeaders({
+            Authorization: 'Bearer $S{userAt}',
+          })
+          .expectStatus(200)
+          .expectBody([]);
+      });
+    });
     describe('creates new order', () => {
-      // tests here
+      const dto: CreateOrderDto = {
+        cartItems: [
+          {
+            name: 'T-shirt',
+            amount: 1,
+            price: 19.99,
+          },
+          {
+            name: 'Jeans',
+            amount: 2,
+            price: 49.99,
+          },
+        ],
+        cartTotal: 119.97,
+        paymentType: PaymentType.CREDIT_CARD,
+      };
+      it('should create new order', () => {
+        return pactum
+          .spec()
+          .post('/order')
+          .withHeaders({
+            Authorization: 'Bearer $S{userAt}',
+          })
+          .withBody(dto)
+          .expectStatus(201);
+      });
     });
     describe('gets all orders', () => {
       // tests here
