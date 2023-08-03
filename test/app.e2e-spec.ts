@@ -5,7 +5,7 @@ import { INestApplication, ValidationPipe } from '@nestjs/common';
 import { PrismaService } from '../src/prisma/prisma.service';
 import { AuthDto, CreateUserDto } from '../src/auth/dto';
 import { EditUserDto } from '../src/user/dto';
-import { CreateOrderDto } from '../src/order/dto';
+import { CreateOrderDto, EditOrderDto } from '../src/order/dto';
 import { PaymentType } from '@prisma/client';
 
 describe('App e2e', () => {
@@ -241,7 +241,36 @@ describe('App e2e', () => {
       });
     });
     describe('edits order by id', () => {
-      // tests here
+      const dto: EditOrderDto = {
+        cartItems: [
+          {
+            name: 'T-shirt',
+            amount: 1,
+            price: 19.99,
+          },
+          {
+            name: 'Jeans',
+            amount: 2,
+            price: 49.99,
+          },
+        ],
+        cartTotal: 119.97,
+        paymentType: PaymentType.CASH,
+      };
+
+      it('should edit order', () => {
+        return pactum
+          .spec()
+          .patch('/order/{id}')
+          .withPathParams('id', '$S{orderId}')
+          .withHeaders({
+            Authorization: 'Bearer $S{userAt}',
+          })
+          .withBody(dto)
+          .expectStatus(200)
+          .expectBodyContains(dto.cartTotal)
+          .expectBodyContains(dto.paymentType);
+      });
     });
     describe('deletes order by id', () => {
       // tests here

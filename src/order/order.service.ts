@@ -1,5 +1,5 @@
-import { Injectable } from '@nestjs/common';
-import { Order } from '@prisma/client';
+import { ForbiddenException, Injectable } from '@nestjs/common';
+import { Order, PaymentType } from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateOrderDto, EditOrderDto } from './dto';
 
@@ -35,8 +35,33 @@ export class OrderService {
     return order;
   }
 
-  editOrderById(userId: number, orderId: number, dto: EditOrderDto) {
-    // logic here
+  async editOrderById(userId: number, orderId: number, dto: EditOrderDto) {
+    const { cartItems, cartTotal, paymentType } = dto;
+    // get the order by id
+    const order = await this.prisma.order.findUnique({
+      where: {
+        id: orderId,
+      },
+    });
+
+    // check if user owns the order
+    if (!order || order.userId !== userId) {
+      throw new ForbiddenException('Access to resource denied');
+    }
+
+    return this.prisma.order.update({
+      where: {
+        id: orderId,
+      },
+      data: {
+        cartItems: {
+          deleteMany: {},
+          create: cartItems,
+        },
+        cartTotal,
+        paymentType,
+      },
+    });
   }
 
   deleteOrderById(userId: number, orderId: number) {

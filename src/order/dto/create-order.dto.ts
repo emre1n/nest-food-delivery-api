@@ -1,10 +1,7 @@
-import { IsEnum, IsNotEmpty, IsString } from 'class-validator';
 import { PaymentType } from '@prisma/client';
+import { IsEnum, IsNotEmpty } from 'class-validator';
 
 export class CreateOrderDto {
-  //   @IsNotEmpty()
-  //   userId: number;
-
   @IsNotEmpty()
   cartItems: {
     name: string;

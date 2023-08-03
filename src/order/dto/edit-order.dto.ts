@@ -1,21 +1,18 @@
-import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import { PaymentType } from '@prisma/client';
+import { IsEnum, IsOptional } from 'class-validator';
 
 export class EditOrderDto {
-  @IsNotEmpty()
-  userId: number;
-
-  @IsNotEmpty()
+  @IsOptional()
   cartItems: {
-    id: number;
     name: string;
     amount: number;
     price: number;
   }[];
 
-  @IsNotEmpty()
+  @IsOptional()
   cartTotal: number;
 
-  @IsString()
+  @IsEnum(PaymentType)
   @IsOptional()
-  paymentType?: 'cash' | 'credit';
+  paymentType: PaymentType;
 }
