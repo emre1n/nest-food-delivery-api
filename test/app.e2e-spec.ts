@@ -273,7 +273,26 @@ describe('App e2e', () => {
       });
     });
     describe('deletes order by id', () => {
-      // tests here
+      it('should delete order', () => {
+        return pactum
+          .spec()
+          .delete('/order/{id}')
+          .withPathParams('id', '$S{orderId}')
+          .withHeaders({
+            Authorization: 'Bearer $S{userAt}',
+          })
+          .expectStatus(204);
+      });
+      it('should get empty orders', () => {
+        return pactum
+          .spec()
+          .get('/order')
+          .withHeaders({
+            Authorization: 'Bearer $S{userAt}',
+          })
+          .expectStatus(200)
+          .expectJsonLength(0);
+      });
     });
   });
 
