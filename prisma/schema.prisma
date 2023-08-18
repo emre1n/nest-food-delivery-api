@@ -41,6 +41,13 @@ model Category {
   meals Meal[]
 }
 
+model Billboard {
+  id       Int    @id @default(autoincrement())
+  title    String
+  subtitle String
+  imageUrl String
+}
+
 model CartItem {
   id        Int      @id @default(autoincrement())
   createdAt DateTime @default(now())
