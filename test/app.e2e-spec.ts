@@ -307,4 +307,8 @@ describe('App e2e', () => {
   describe('CartItem', () => {
     // Cart item tests here
   });
+
+  describe('Billboard', () => {
+    // Billboard tests here
+  });
 });
