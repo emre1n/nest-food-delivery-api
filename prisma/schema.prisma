@@ -15,7 +15,7 @@ enum PaymentType {
   CREDIT_CARD
 }
 
-model Meal {
+model MenuItem {
   id        Int      @id @default(autoincrement())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -38,7 +38,7 @@ model Category {
 
   name String
 
-  meals Meal[]
+  meals MenuItem[]
 }
 
 model Billboard {
