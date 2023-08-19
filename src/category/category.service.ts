@@ -6,29 +6,29 @@ import { Category, Prisma } from '@prisma/client';
 export class CategoryService {
   constructor(private prisma: PrismaService) {}
 
-  async create(data: Prisma.CategoryCreateInput): Promise<Category> {
+  async createCategory(data: Prisma.CategoryCreateInput): Promise<Category> {
     return this.prisma.category.create({ data });
   }
 
-  async findAll(): Promise<Category[]> {
+  async getCategories(): Promise<Category[]> {
     return this.prisma.category.findMany();
   }
 
-  async findOne(id: number) {
-    return this.prisma.category.findUnique({ where: { id } });
+  async getCategoryById(categoryId: number) {
+    return this.prisma.category.findUnique({ where: { id: categoryId } });
   }
 
-  async update(
-    id: number,
+  async editCategoryById(
+    categoryId: number,
     data: Prisma.CategoryUpdateInput,
   ): Promise<Category> {
     return this.prisma.category.update({
-      where: { id },
+      where: { id: categoryId },
       data,
     });
   }
 
-  async remove(id: number) {
-    return this.prisma.category.delete({ where: { id } });
+  async deleteCategoryById(categoryId: number) {
+    return this.prisma.category.delete({ where: { id: categoryId } });
   }
 }

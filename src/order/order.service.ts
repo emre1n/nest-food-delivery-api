@@ -6,6 +6,7 @@ import { CreateOrderDto, EditOrderDto } from './dto';
 @Injectable()
 export class OrderService {
   constructor(private prisma: PrismaService) {}
+
   getOrders(userId: number) {
     return this.prisma.order.findMany({
       where: {
