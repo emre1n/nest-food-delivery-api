@@ -4,6 +4,6 @@ import { BillboardService } from './billboard.service';
 
 @Module({
   controllers: [BillboardController],
-  providers: [BillboardService]
+  providers: [BillboardService],
 })
 export class BillboardModule {}

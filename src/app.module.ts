@@ -3,7 +3,7 @@ import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
 import { OrderModule } from './order/order.module';
-import { MealModule } from './meal/meal.module';
+import { MenuItemModule } from './menu-item/menu-item.module';
 import { PrismaModule } from './prisma/prisma.module';
 import { CartItemModule } from './cart-item/cart-item.module';
 import { CategoryModule } from './category/category.module';
@@ -15,7 +15,7 @@ import { BillboardModule } from './billboard/billboard.module';
     AuthModule,
     UserModule,
     OrderModule,
-    MealModule,
+    MenuItemModule,
     PrismaModule,
     CartItemModule,
     CategoryModule,
