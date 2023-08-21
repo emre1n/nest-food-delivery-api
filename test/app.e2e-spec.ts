@@ -296,8 +296,8 @@ describe('App e2e', () => {
     });
   });
 
-  describe('Meal', () => {
-    // Meal tests here
+  describe('MenuItem', () => {
+    // MenuItem tests here
   });
 
   describe('Category', () => {
