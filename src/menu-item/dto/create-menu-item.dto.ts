@@ -21,4 +21,7 @@ export class CreateMenuItemDto {
 
   @IsNotEmpty()
   deleted: boolean;
+
+  @IsNotEmpty()
+  isFeatured: boolean;
 }
