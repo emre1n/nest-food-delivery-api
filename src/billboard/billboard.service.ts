@@ -1,12 +1,13 @@
 import { Injectable } from '@nestjs/common';
-import { Billboard, Prisma } from '@prisma/client';
+import { Billboard } from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { CreateBillboardDto, EditBillboardDto } from './dto';
 
 @Injectable()
 export class BillboardService {
   constructor(private prisma: PrismaService) {}
 
-  async createBillboard(data: Prisma.BillboardCreateInput): Promise<Billboard> {
+  async createBillboard(data: CreateBillboardDto): Promise<Billboard> {
     return this.prisma.billboard.create({ data });
   }
 
@@ -20,7 +21,7 @@ export class BillboardService {
 
   async editBillboardById(
     billboardId: number,
-    data: Prisma.BillboardUpdateInput,
+    data: EditBillboardDto,
   ): Promise<Billboard> {
     return this.prisma.billboard.update({
       where: { id: billboardId },
