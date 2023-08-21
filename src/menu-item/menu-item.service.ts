@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { MenuItem } from '@prisma/client';
+import { MenuItem, Prisma } from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateMenuItemDto, EditMenuItemDto } from './dto';
 
@@ -11,8 +11,20 @@ export class MenuItemService {
     return this.prisma.menuItem.create({ data });
   }
 
-  async getMenuItems(): Promise<MenuItem[]> {
-    return this.prisma.menuItem.findMany();
+  async getMenuItems(query?: { categoryId?: number; isFeatured?: boolean }) {
+    const where = {} as Prisma.MenuItemWhereInput;
+
+    if (query?.categoryId) {
+      where.categoryId = query.categoryId;
+    }
+
+    if (query?.isFeatured) {
+      where.isFeatured = query.isFeatured ?? undefined;
+    }
+
+    return this.prisma.menuItem.findMany({
+      where,
+    });
   }
 
   async getMenuItemById(menuItemId: number) {

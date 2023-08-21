@@ -7,6 +7,7 @@ import {
   ParseIntPipe,
   Patch,
   Post,
+  Query,
 } from '@nestjs/common';
 import { CreateMenuItemDto, EditMenuItemDto } from './dto';
 import { MenuItemService } from './menu-item.service';
@@ -21,8 +22,17 @@ export class MenuItemController {
   }
 
   @Get()
-  getMenuItems() {
-    return this.menuItemService.getMenuItems();
+  getMenuItems(@Query() query) {
+    // Convert isFeatured to boolean
+    if (query.isFeatured) {
+      query.isFeatured = query.isFeatured === 'true';
+    }
+    // Convert categoryId to number
+    if (query.categoryId) {
+      query.categoryId = +query.categoryId;
+    }
+
+    return this.menuItemService.getMenuItems(query);
   }
 
   @Get(':id')
