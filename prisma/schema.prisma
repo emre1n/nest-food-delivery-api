@@ -16,10 +16,11 @@ enum PaymentType {
 }
 
 model MenuItem {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  deleted   Boolean  @default(false)
+  id         Int      @id @default(autoincrement())
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  deleted    Boolean  @default(false)
+  isFeatured Boolean  @default(false)
 
   name        String
   description String?
