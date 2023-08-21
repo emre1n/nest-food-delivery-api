@@ -3,13 +3,13 @@ import { IsOptional, IsString } from 'class-validator';
 export class EditBillboardDto {
   @IsString()
   @IsOptional()
-  title: string;
+  title?: string;
 
   @IsString()
   @IsOptional()
-  subtitle: string;
+  subtitle?: string;
 
   @IsString()
   @IsOptional()
-  imageUrl: string;
+  imageUrl?: string;
 }
