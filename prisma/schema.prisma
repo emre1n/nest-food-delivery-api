@@ -10,6 +10,12 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum Currency {
+  USD
+  EUR
+  TRY
+}
+
 enum PaymentType {
   CASH
   CREDIT_CARD
@@ -25,6 +31,7 @@ model MenuItem {
   name        String
   description String?
   price       Float
+  currency    Currency @default(EUR)
   image       String?
 
   categoryId Int
